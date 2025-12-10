@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Booking Form</title>
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background: #f2f2f2;
+    }
+
+    .container {
+        width: 400px;
+        margin: 50px auto;
+        background: white;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px #ccc;
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    label {
+        font-weight: bold;
+        display: block;
+        margin-top: 10px;
+    }
+
+    input, select, button {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        border-radius: 5px;
+        border: 1px solid #aaa;
+    }
+
+    button {
+        background: #1a73e8;
+        color: white;
+        border: none;
+        cursor: pointer;
+        margin-top: 15px;
+    }
+
+    button:hover {
+        background: #0c56c5;
+    }
+
+    .price-box {
+        background: #e8f0fe;
+        padding: 10px;
+        margin-top: 10px;
+        border-radius: 5px;
+        text-align: center;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .error {
+        color: red;
+        margin-top: 5px;
+        font-size: 14px;
+    }
+</style>
+
+</head>
+<body>
+
+<div class="container">
+    <h2>Booking Form</h2>
+
+    <form id="bookingForm">
+
+        <label>Name:</label>
+        <input type="text" id="name">
+
+        <label>Email:</label>
+        <input type="email" id="email">
+
+        <label>Select Package:</label>
+        <select id="package">
+            <option value="1000">Basic - ₹1000</option>
+            <option value="2000">Premium - ₹2000</option>
+            <option value="3000">Luxury - ₹3000</option>
+        </select>
+
+        <label>Promo Code:</label>
+        <input type="text" id="promo" placeholder="Enter promo code">
+
+        <div class="price-box">
+            Total Price: ₹<span id="totalPrice">1000</span>
+        </div>
+
+        <div class="error" id="errorMsg"></div>
+
+        <button type="button" onclick="submitForm()">Book Now</button>
+    </form>
+</div>
+
+<script>
+    const packageSelect = document.getElementById("package");
+    const promoInput = document.getElementById("promo");
+    const totalPriceDisplay = document.getElementById("totalPrice");
+    const errorMsg = document.getElementById("errorMsg");
+
+    // Price Calculation Function
+    function calculatePrice() {
+        let basePrice = parseInt(packageSelect.value);
+        let promo = promoInput.value.trim().toUpperCase();
+        let finalPrice = basePrice;
+
+        if (promo === "DISCOUNT10") {
+            finalPrice = basePrice - (basePrice * 0.10);
+        } else if (promo === "DISCOUNT50") {
+            finalPrice = basePrice - 50;
+        }
+
+        totalPriceDisplay.innerText = finalPrice;
+    }
+
+    packageSelect.addEventListener("change", calculatePrice);
+    promoInput.addEventListener("input", calculatePrice);
+
+    // Form Validation + Submit
+    function submitForm() {
+        let name = document.getElementById("name").value.trim();
+        let email = document.getElementById("email").value.trim();
+
+        if (name === "") {
+            errorMsg.innerText = "Please enter your name";
+            return;
+        }
+
+        if (email === "") {
+            errorMsg.innerText = "Please enter your email";
+            return;
+        }
+
+        errorMsg.innerText = "";
+        alert("Booking Successful!\nTotal Amount: ₹" + totalPriceDisplay.innerText);
+    }
+</script>
+
+</body>
+</html>
